@@ -17,13 +17,18 @@ $().ready(function() {
 })
 
 
+function ajoutQuestion(question) {
+  console.log(question);
+  $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"]) // on affiche le contenu de la question (son intitulé)
+                      .append($("<button onclick=deleteQuestion(this)>").append("Supprimer"))); // on ajoute à côté un bouton pour supprimer la question
+}
+
+
 function refreshListeQuestions(data) {
   console.log(data);
   for(var question of data["Questions"]) {
     // on ajoute chaque question à la listeQuestions
-    $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"]) // on affiche le contenu de la question (son intitulé)
-                        .append($("<button onclick=deleteQuestion(this)>").append("Supprimer"))); // on ajoute à côté un bouton pour supprimer la question
-
+      ajoutQuestion(question);
   }
 }
 
@@ -44,8 +49,7 @@ function submitQuestion() {
           if(data["success"] == true) {
             // le serveur nous dit que la réponse a bien été ajoutée
             alert("La question a bien été ajoutée.");
-            $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"])
-                                .append($("<button onclick=deleteQuestion(this)>").append("Supprimer")));
+            ajoutQuestion(data["question"]); // on ajoute la question à la liste
           }
         },
         error: function() {
