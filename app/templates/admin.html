@@ -13,12 +13,38 @@
   <ul id="listeQuestions">
 
   </ul>
+  </br>
+
+
+  <div id="ajoutQuestionBlock">
+    <h1>Ajouter une nouvelle question</h1>
+    <label for="intitule">Intitulé de votre question</label></br>
+    <input id="intitule" type="text" required/></br></br>
+
+    <label for="reponse1">Réponse 1</label></br>
+    <input id="reponse1" type="text" required /></br></br>
+
+    <label for="reponse2">Réponse 2</label></br>
+    <input id="reponse2" type="text" required /></br></br>
+
+    <h2>La bonne réponse est :</h2>
+    <label for="radioButton1">La 1
+    <input type="radio" id="radioButton1" checked="checked" /></br>
+
+    <label for="radioButton1">La 2
+    <input type="radio" id="radioButton2" /></br>
+
+    <input type="button" value="Envoyer la question" onclick="submitQuestion()"/>
+  </div>
+
 </body>
 
 
 <!-- Import de JQuery -->
 <script src="{{url_for('static', filename='js/jquery.min.js')}}">
 </script>
-
+<!-- Import du modèle de Question -->
 <script src="{{url_for('static', filename='js/admin.js')}}">
+</script>
+<script src="{{url_for('static', filename='js/question.js')}}">
 </script>

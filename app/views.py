@@ -17,14 +17,15 @@ def post_question():
 
 @app.route("/question/", methods=["PUT"] )
 def put_question():
-
+    print(request.json)
     if request.json and {"contenu","reponse1","reponse2","bonneReponse"}.issubset(request.json.keys()):
         q=Question(**request.json)
         db.session.add(q)
         db.session.commit()
-        return "Bravo, vos données ont été postées"
+        print("Question ajoutée")
+        return jsonify( {"success": True} )
     else:
-        return "Votre question est incomplète"
+        return jsonify( {"success": False} )
 
 @app.route("/question/", methods=["GET"] )
 def get_questions():
