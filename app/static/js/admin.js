@@ -21,13 +21,10 @@ function refreshListeQuestions(data) {
   console.log(data);
   for(var question of data["Questions"]) {
     // on ajoute chaque question à la listeQuestions
-    $("#listeQuestions").append($("<li>").append(question["contenu"])); // on affiche le contenu de la question (son intitulé)
+    $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"]) // on affiche le contenu de la question (son intitulé)
+                        .append($("<button onclick=deleteQuestion(this)>").append("Supprimer"))); // on ajoute à côté un bouton pour supprimer la question
+
   }
-}
-
-
-function showAddQuestionElements() {
-  $("ajoutQuestionBlock").show();
 }
 
 function submitQuestion() {
@@ -47,11 +44,32 @@ function submitQuestion() {
           if(data["success"] == true) {
             // le serveur nous dit que la réponse a bien été ajoutée
             alert("La question a bien été ajoutée.");
-            $("#listeQuestions").append($("<li>").append($("#intitule").val()));
+            $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"])
+                                .append($("<button onclick=deleteQuestion(this)>").append("Supprimer")));
           }
         },
         error: function() {
           alert("Erreur : la question n'a pas pu être ajoutée");
     }
+  });
+}
+
+
+function deleteQuestion(event) {
+  var id = $(event).parent().attr("id");
+  $.ajax({
+        url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
+        type: "DELETE", // méthode DELETE
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({"id":id}), // on envoie l'id de la question au serveur
+        success: function(data) {
+          if(data["success"] == true) {
+            alert("La question (id "+id+") a bien été supprimée.");
+            $("#listeQuestions #"+id).remove(); // on supprime la questions dans la liste
+          }
+        },
+        error: function(err) {
+          alert("Impossible de supprimer la question.");
+        }
   });
 }
