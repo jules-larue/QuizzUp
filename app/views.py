@@ -1,10 +1,14 @@
 from .app import app, db
 from .models import Question, InstanceQuestion, Reponse
 from datetime import date
-from flask import Flask, request,jsonify
+from flask import Flask, request,jsonify, render_template
 import sys,datetime
 import json
 
+
+@app.route("/admin/")
+def admin():
+    return render_template("admin.html")
 
 @app.route("/question/", methods=["POST"] )
 def post_question():
