@@ -35,10 +35,10 @@ def get_questions():
 def delete_question(question):
     q=Question.query.get(question)
     if not q:
-        return 'question inexistante'
+        return jsonify( {"success": False} )
     db.session.delete(q)
     db.session.commit()
-    return "Question supprimée"
+    return jsonify( {"success": True} )
 
 
 @app.route("/reponse/", methods=["PUT"] )
