@@ -23,7 +23,7 @@ def put_question():
         db.session.add(q)
         db.session.commit()
         print("Question ajoutée")
-        return jsonify( {"success": True} )
+        return jsonify( {"success": True, "question": q.toDict()} )
     else:
         return jsonify( {"success": False} )
 
