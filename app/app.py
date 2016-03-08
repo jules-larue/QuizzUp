@@ -2,10 +2,13 @@
 from flask import Flask
 app = Flask(__name__)
 app.debug = True
+app.config['BOOTSTRAP_SERVE_LOCAL'] = True
 
 from flask.ext.script import Manager
 manager = Manager(app)
 
+from flask.ext.bootstrap import Bootstrap
+Bootstrap(app)
 
 import os.path
 def mkpath(p):
