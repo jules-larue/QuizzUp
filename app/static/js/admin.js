@@ -62,7 +62,7 @@ function submitQuestion() {
           }
         },
         error: function() {
-          alert("Erreur : la question n'a pas pu être ajoutée");
+          alertFailAdd();
     }
   });
 }
@@ -88,10 +88,25 @@ function deleteQuestion(event) {
 }
 
 
+// ===== NOTIFIACTION LOLIBOX =====
+/*
+  Succès lors de l'ajout d'une question
+*/
 function alertSuccessAdd() {
   Lobibox.notify('success', {
     title: 'Question ajoutée !',
     msg: 'Votre question a bien été ajoutée.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+/*
+  Echec lors de l'ajout d'une question
+*/
+function alertFailAdd() {
+  Lobibox.notify('error', {
+    title: 'Erreur !',
+    msg: 'Votre question n\'a pas pu être ajoutée.',
     delayIndicator: false // pas de barre timer
   });
 }
