@@ -43,7 +43,11 @@
     <!-- La deuxième colonne affichera un formulaire pour ajouter une nouvelle question, ou en modifier une existante
           Au début, c'est un formulaire vierge pour ajouter une nouvelle question qu'on affiche -->
     <div id="form-question" class="form col-sm-6">
-      <h2>Ajouter une nouvelle question</h2>
+      <!-- Icone 'croix" pour fermer un formulaire d'édition d'édition d'une question existante -->
+      <button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+      <h2 class="inline">Ajouter une nouvelle question</h2>
+
       <label for="intitule">Intitulé de votre question</label></br>
       <input id="intitule" class="form-control" type="text" required/></br></br>
 

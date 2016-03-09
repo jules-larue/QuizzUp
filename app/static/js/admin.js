@@ -17,6 +17,9 @@ $().ready(function() {
 
   $("#button-modifier").hide(); // au début on ne montre pas le bouton de modification
 
+  $(".close").click(showAddQuestion); // association évènement click à la croix
+  $(".close").hide(); // au début, pas de croix
+
 })
 
 
@@ -131,6 +134,9 @@ function showModifQuestion(id) {
     // on met en valeur la question dans le tableau
     $("#table-body-questions #"+id).addClass("selected-question");
 
+    // affichage croix pour fermer
+    $(".close").show();
+
     // on cache le bouton d'ajout de nouvelle question, et on affiche celui de Modification
     $("#button-add").hide();
     $("#button-modifier").show();
@@ -164,6 +170,9 @@ function showAddQuestion() {
     // on modifie le titre
     $("#form-question h2").text("Ajouter une nouvelle question");
 
+    // masquage croix pour fermer
+    $(".close").hide();
+
     // on vide les champs de saisie
     $("#intitule").val("");
     $("#reponse1").val("");
@@ -178,6 +187,7 @@ function showAddQuestion() {
   // et on affiche un formulaire vierge d'ajout de question
   $("#form-question").fadeIn();
 }
+
 
 
 // ===== NOTIFIACTION LOLIBOX =====
