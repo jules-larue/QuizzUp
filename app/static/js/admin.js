@@ -110,6 +110,7 @@ function updateQuestion(id) {
             $("#table-body-questions #"+id+" .contenu").first().text(data["question"]["contenu"]);
             $("#table-body-questions #"+id+" .reponse1").first().text(data["question"]["reponse1"]);
             $("#table-body-questions #"+id+" .reponse2").first().text(data["question"]["reponse2"]);
+            $("#modifQuestionBlock").fadeToggle(); // on fait disparaitre le formulaire de mise à jour
           }
         },
         error: function(err) {
