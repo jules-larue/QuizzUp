@@ -10,10 +10,21 @@ import json
 def admin():
     return render_template("admin.html")
 
-@app.route("/question/", methods=["POST"] )
-def post_question():
-    print("Vous avez effectué une requete post avec les paramètres:" + str(request.json))
-    return "Bravo, vos données ont été postées" ## TODO : ne fait rien ici, si vous en avez besoin, modifiez ce code !
+@app.route("/question/<int:id>", methods=["POST"] )
+def post_question(id):
+    if request.json and {"contenu","reponse1","reponse2","bonneReponse"}.issubset(request.json.keys()): # on vérifie la requête
+        question = Question.query.get(id) # on récupère la question à modifier
+        # et on modifie ses attributs
+        question.setContenu(request.json["contenu"])
+        question.setReponse1(request.json["reponse1"])
+        question.setReponse2(request.json["reponse2"])
+        question.setBonneReponse(request.json["bonneReponse"])
+        # et on fait les changements dans la base de données
+        db.session.add(question)
+        db.session.commit()
+        return jsonify( {"success": True, "question": question.toDict()} ) # on renvoie un succès et la question modifiée
+    else:
+        return jsonify( {"success": False} ) #n renvoie un échec
 
 @app.route("/question/", methods=["PUT"] )
 def put_question():
