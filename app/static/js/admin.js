@@ -19,8 +19,16 @@ $().ready(function() {
 
 function ajoutQuestion(question) {
   console.log(question);
-  $("#listeQuestions").append($("<li id="+question["id"]+">").append(question["contenu"]) // on affiche le contenu de la question (son intitulé)
-                      .append($("<button onclick=deleteQuestion(this)>").append("Supprimer"))); // on ajoute à côté un bouton pour supprimer la question
+  var id = question["id"]; // l'id de la question à ajouter
+  $("#table-body-questions").append($("<tr id="+id+">")); // on ajoute une nouvelle ligne du tableau
+  // on ajoute ensuite chaque colonne
+  $("#table-body-questions #"+id).append($("<th>").append(id)) // ID
+                                    .append($("<td>").append(question["contenu"])) // intitulé
+                                    .append($("<td>").append(question["reponse1"])) // réponse 1
+                                    .append($("<td>").append(question["reponse2"])) // réponse 2
+                                    .append($("<td>").append($("<span class='glyphicon glyphicon-trash' onclick='deleteQuestion(this)'>")));
+  // ajout d'un curseur "pointer" quand on passe la main sur la corbeille pour supprimer une question
+  $(".glyphicon-trash").css("cursor", "pointer");
 }
 
 
@@ -60,7 +68,7 @@ function submitQuestion() {
 
 
 function deleteQuestion(event) {
-  var id = $(event).parent().attr("id");
+  var id = $(event).parent().parent().attr("id");
   $.ajax({
         url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
         type: "DELETE", // méthode DELETE
@@ -69,7 +77,7 @@ function deleteQuestion(event) {
         success: function(data) {
           if(data["success"] == true) {
             alert("La question (id "+id+") a bien été supprimée.");
-            $("#listeQuestions #"+id).remove(); // on supprime la questions dans la liste
+            $("#table-body-questions #"+id).remove(); // on supprime la question dans la liste
           }
         },
         error: function(err) {
