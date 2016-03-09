@@ -14,6 +14,7 @@ $().ready(function() {
       console.log("Erreur lors de la récupération des questions");
     }
   });
+
 })
 
 
@@ -56,7 +57,7 @@ function submitQuestion() {
         success: function(data) {
           if(data["success"] == true) {
             // le serveur nous dit que la réponse a bien été ajoutée
-            alert("La question a bien été ajoutée.");
+            alertSuccessAdd();
             ajoutQuestion(data["question"]); // on ajoute la question à la liste
           }
         },
@@ -83,5 +84,14 @@ function deleteQuestion(event) {
         error: function(err) {
           alert("Impossible de supprimer la question.");
         }
+  });
+}
+
+
+function alertSuccessAdd() {
+  Lobibox.notify('success', {
+    title: 'Question ajoutée !',
+    msg: 'Votre question a bien été ajoutée.',
+    delayIndicator: false // pas de barre timer
   });
 }
