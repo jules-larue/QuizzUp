@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="/static/css/admin.css">
   <link rel="stylesheet" href="/static/css/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="/static/css/bootstrap/css/bootstrap-theme.css">
   <!-- Import du css de LobiBox -->
@@ -16,60 +17,51 @@
 <body>
   <h1>Administration</h1>
 
-  <div class="row"> <!-- centrer ==> text-center -->
-    <div id="ajoutQuestionBlock" class="col-sm-7"> <!-- centrer ==> text-center -->
+  <div class="row">
+
+    <div class="col-sm-6">
+      <h2>Liste des questions</h2>
+      <!-- Tableau d'affichage des questions de la base de données -->
+      <table class="table table-striped">
+        <thead> <!-- En-tête -->
+          <tr class="text-center">
+            <th>ID</th>
+            <th>Intitulé</th>
+            <th>Réponse 1</th>
+            <th>Réponse 2</th>
+            <th>Suppression</th>
+            <th>Modification</th>
+          </tr>
+        </thead>
+
+        <tbody id="table-body-questions"> <!-- Corps du tableau (les questions) -->
+
+        </tbody>
+      </table>
+    </div> <!-- Fin colonne -->
+
+    <!-- La deuxième colonne affichera un formulaire pour ajouter une nouvelle question, ou en modifier une existante
+          Au début, c'est un formulaire vierge pour ajouter une nouvelle question qu'on affiche -->
+    <div id="form-question" class="form col-sm-6">
       <h2>Ajouter une nouvelle question</h2>
       <label for="intitule">Intitulé de votre question</label></br>
-      <input id="intitule" type="text" required/></br></br>
+      <input id="intitule" class="form-control" type="text" required/></br></br>
 
       <label for="reponse1">Réponse 1</label></br>
-      <input id="reponse1" type="text" required />
+      <input id="reponse1" class="form-control" type="text" required />
       <input type="radio" name="radioGroup" id="radioButton1" checked="checked" /></br></br>
 
       <label for="reponse2">Réponse 2</label></br>
-      <input id="reponse2" type="text" required />
+      <input id="reponse2" class="form-control" type="text" required />
       <input type="radio" name="radioGroup" id="radioButton2" /></br></br>
 
-      <input type="button" class="btn btn-primary" value="Envoyer la question" onclick="submitQuestion()"/>
-    </div> <!-- Fin colonne -->
-
-
-    <div id="modifQuestionBlock" class="col-sm-5 center-block">
-      <h2></h2>
-      <label for="intituleModif">Intitulé de votre question</label></br>
-      <input id="intituleModif" type="text" required/></br></br>
-
-      <label for="reponse1Modif">Réponse 1</label></br>
-      <input id="reponse1Modif" type="text" required />
-      <input type="radio" name="radioGroupModif" id="radioButton1Modif" checked="checked" /></br></br>
-
-      <label for="reponse2Modif">Réponse 2</label></br>
-      <input id="reponse2Modif" type="text" required />
-      <input type="radio" name="radioGroupModif" id="radioButton2Modif" /></br></br>
-
+      <!-- Bouton pour créer une nouvelle question -->
+      <input id="button-add" type="button" class="btn btn-primary" value="Envoyer la question" onclick="submitQuestion()"/>
+      <!-- Bouton pour modifier une question -->
       <input id="button-modifier" type="button" class="btn btn-success" value="Modifier la question" onclick=""/>
     </div> <!-- Fin colonne -->
   </div> <!-- Fin row -->
 
-
-  <h2>Liste des questions</h2>
-  <!-- Tableau d'affichage des questions de la base de données -->
-  <table class="table table-striped">
-    <thead> <!-- En-tête -->
-      <tr class="text-center">
-        <th>ID</th>
-        <th>Intitulé</th>
-        <th>Réponse 1</th>
-        <th>Réponse 2</th>
-        <th>Suppression</th>
-        <th>Modification</th>
-      </tr>
-    </thead>
-
-    <tbody id="table-body-questions"> <!-- Corps du tableau (les questions) -->
-
-    </tbody>
-  </table>
 </body>
 
 

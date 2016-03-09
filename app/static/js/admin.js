@@ -15,7 +15,7 @@ $().ready(function() {
     }
   });
 
-  $("#modifQuestionBlock").hide(); // au début, on cache le formulaire de modification d'une question
+  $("#button-modifier").hide(); // au début on ne montre pas le bouton de modification
 
 })
 
@@ -93,10 +93,10 @@ function deleteQuestion(event) {
 
 
 function updateQuestion(id) {
-  var question = new Question($("#intituleModif").val(),
-                              $("#reponse1Modif").val(),
-                              $("#reponse2Modif").val(),
-                              $("#radioButton1Modif").is(":checked") ? 1 : 2
+  var question = new Question($("#intitule").val(),
+                              $("#reponse1").val(),
+                              $("#reponse2").val(),
+                              $("#radioButton1").is(":checked") ? 1 : 2
                             ); // la nouvelle question mise à jour
   $.ajax({
         url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
@@ -110,7 +110,7 @@ function updateQuestion(id) {
             $("#table-body-questions #"+id+" .contenu").first().text(data["question"]["contenu"]);
             $("#table-body-questions #"+id+" .reponse1").first().text(data["question"]["reponse1"]);
             $("#table-body-questions #"+id+" .reponse2").first().text(data["question"]["reponse2"]);
-            $("#modifQuestionBlock").fadeToggle(); // on fait disparaitre le formulaire de mise à jour
+            showAddQuestion(); // on affiche un fomulaire d'ajout de nouvelle question
           }
         },
         error: function(err) {
@@ -124,24 +124,52 @@ function updateQuestion(id) {
   Affiche le bloc de modification d'une question dont l'id est précisé en paramètre
 */
 function showModifQuestion(id) {
-  var intitule = $("#table-body-questions #"+id+" .contenu").first().text();
-  var reponse1 = $("#table-body-questions #"+id+" .reponse1").first().text();
-  var reponse2 = $("#table-body-questions #"+id+" .reponse2").first().text();
-  // on pré-remplit les infos du formulaire
-  $("#modifQuestionBlock h2").text("Modification de la question numéro "+id);
-  $("#intituleModif").val(intitule);
-  $("#reponse1Modif").val(reponse1);
-  $("#reponse2Modif").val(reponse2);
-  $("#radioButton1Modif").attr("checked", "checked"); // pour l'instant, on coche par défaut la réponse 1
+   // on commence par faire disparaitre l'ancien formulaire
+  $("#form-question").fadeOut(callback = function() {
+    // on cache le bouton d'ajout de nouvelle question, et on affiche celui de Modification
+    $("#button-add").hide();
+    $("#button-modifier").show();
 
-  // on lance une petite animation de slide pour afficher le formulaire, s'il 'est pas déjà affiché
-  if($("#modifQuestionBlock").is(":hidden")) {
-    $("#modifQuestionBlock").fadeToggle();
-  }
+    var intitule = $("#table-body-questions #"+id+" .contenu").first().text();
+    var reponse1 = $("#table-body-questions #"+id+" .reponse1").first().text();
+    var reponse2 = $("#table-body-questions #"+id+" .reponse2").first().text();
+    // on pré-remplit les infos du formulaire
+    $("#form-question h2").text("Modification de la question numéro "+id);
+    $("#intitule").val(intitule);
+    $("#reponse1").val(reponse1);
+    $("#reponse2").val(reponse2);
+    $("#radioButton1").attr("checked", "checked"); // pour l'instant, on coche par défaut la réponse 1
 
-  // à ce moment, on donne le bon argument à la fonction onclick() du bouton de mise à jour
-  $("#button-modifier").attr("onclick", "updateQuestion("+id+")");
+    // à ce moment, on donne le bon argument à la fonction onclick() du bouton de mise à jour
+    $("#button-modifier").attr("onclick", "updateQuestion("+id+")");
+  });
+  // on lance une petite animation de slide pour afficher le formulaire
+  $("#form-question").fadeIn();
+}
 
+/*
+  Fait disparaitre le formulaire de question en cours,
+  et affiche un formulaire vierge pour ajouter une question
+*/
+function showAddQuestion() {
+  // on commence par faire disparaitre l'ancien formulaire
+  $("#form-question").fadeOut(callback = function() {
+    // on modifie le titre
+    $("#form-question h2").text("Ajouter une nouvelle question");
+
+    // on vide les champs de saisie
+    $("#intitule").val("");
+    $("#reponse1").val("");
+    $("#reponse2").val("");
+    $("#radioButton1").attr("checked", "checked"); // on coche la réponse 1 par défaut
+
+    // on cache le bouton de mise à jour de question, on le remplace par celui d'ajout
+    $("#button-modifier").hide();
+    $("#button-add").show();
+  });
+
+  // et on affiche un formulaire vierge d'ajout de question
+  $("#form-question").fadeIn();
 }
 
 
