@@ -27,9 +27,11 @@ function ajoutQuestion(question) {
                                     .append($("<td>").append(question["contenu"])) // intitulé
                                     .append($("<td>").append(question["reponse1"])) // réponse 1
                                     .append($("<td>").append(question["reponse2"])) // réponse 2
-                                    .append($("<td>").append($("<span class='glyphicon glyphicon-trash' onclick='deleteQuestion(this)'>")));
-  // ajout d'un curseur "pointer" quand on passe la main sur la corbeille pour supprimer une question
+                                    .append($("<td>").append($("<span class='glyphicon glyphicon-trash' onclick='deleteQuestion(this)'>")))
+                                    .append($("<td>").append($("<span class='glyphicon glyphicon-edit' onclick=''>"))); // bouton pour modifier la question
+  // ajout d'un curseur "pointer" quand on passe les icones suppression et modification
   $(".glyphicon-trash").css("cursor", "pointer");
+  $(".glyphicon-edit").css("cursor", "pointer");
 }
 
 
@@ -124,7 +126,7 @@ function alertSuccessRemove() {
 
 
 /*
-  Echec lors de l'ajout d'une question
+  Echec lors de la suppression d'une question
 */
 function alertFailRemove() {
   Lobibox.notify('error', {
