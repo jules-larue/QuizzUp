@@ -126,6 +126,11 @@ function updateQuestion(id) {
 function showModifQuestion(id) {
    // on commence par faire disparaitre l'ancien formulaire
   $("#form-question").fadeOut(callback = function() {
+    // on commence pas enlever la mise en valeur d'une autre éventuelle question
+    $("#table-body-questions tr").removeClass("selected-question");
+    // on met en valeur la question dans le tableau
+    $("#table-body-questions #"+id).addClass("selected-question");
+
     // on cache le bouton d'ajout de nouvelle question, et on affiche celui de Modification
     $("#button-add").hide();
     $("#button-modifier").show();
@@ -154,6 +159,8 @@ function showModifQuestion(id) {
 function showAddQuestion() {
   // on commence par faire disparaitre l'ancien formulaire
   $("#form-question").fadeOut(callback = function() {
+    // on ne met plus en valeur la question dans le tableau
+    $("#table-body-questions tr").removeClass("selected-question");
     // on modifie le titre
     $("#form-question h2").text("Ajouter une nouvelle question");
 
