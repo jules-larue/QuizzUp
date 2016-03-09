@@ -15,6 +15,8 @@ $().ready(function() {
     }
   });
 
+  $("#modifQuestionBlock").hide(); // au début, on cache le formulaire de modification d'une question
+
 })
 
 
@@ -24,11 +26,11 @@ function ajoutQuestion(question) {
   $("#table-body-questions").append($("<tr id="+id+">")); // on ajoute une nouvelle ligne du tableau
   // on ajoute ensuite chaque colonne
   $("#table-body-questions #"+id).append($("<th>").append(id)) // ID
-                                    .append($("<td>").append(question["contenu"])) // intitulé
-                                    .append($("<td>").append(question["reponse1"])) // réponse 1
-                                    .append($("<td>").append(question["reponse2"])) // réponse 2
+                                    .append($("<td class='contenu'>").append(question["contenu"])) // intitulé
+                                    .append($("<td class='reponse1'>").append(question["reponse1"])) // réponse 1
+                                    .append($("<td class='reponse2'>").append(question["reponse2"])) // réponse 2
                                     .append($("<td>").append($("<span class='glyphicon glyphicon-trash' onclick='deleteQuestion(this)'>")))
-                                    .append($("<td>").append($("<span class='glyphicon glyphicon-edit' onclick=''>"))); // bouton pour modifier la question
+                                    .append($("<td>").append($("<span class='glyphicon glyphicon-edit' onclick='showModifQuestion("+id+")'>"))); // bouton pour modifier la question
   // ajout d'un curseur "pointer" quand on passe les icones suppression et modification
   $(".glyphicon-trash").css("cursor", "pointer");
   $(".glyphicon-edit").css("cursor", "pointer");
@@ -90,6 +92,58 @@ function deleteQuestion(event) {
 }
 
 
+function updateQuestion(id) {
+  var question = new Question($("#intituleModif").val(),
+                              $("#reponse1Modif").val(),
+                              $("#reponse2Modif").val(),
+                              $("#radioButton1Modif").is(":checked") ? 1 : 2
+                            ); // la nouvelle question mise à jour
+  $.ajax({
+        url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
+        type: "POST", // méthode POST
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(question), // on envoie les nouvelles données de la question modiifiée au serveur
+        success: function(data) {
+          if(data["success"] == true) {
+            alertSuccessUpdate();
+            // on met à jour le tableau
+            $("#table-body-questions #"+id+" .contenu").first().text(data["question"]["contenu"]);
+            $("#table-body-questions #"+id+" .reponse1").first().text(data["question"]["reponse1"]);
+            $("#table-body-questions #"+id+" .reponse2").first().text(data["question"]["reponse2"]);
+          }
+        },
+        error: function(err) {
+          alertFailUpdate();
+        }
+  });
+}
+
+
+/*
+  Affiche le bloc de modification d'une question dont l'id est précisé en paramètre
+*/
+function showModifQuestion(id) {
+  var intitule = $("#table-body-questions #"+id+" .contenu").first().text();
+  var reponse1 = $("#table-body-questions #"+id+" .reponse1").first().text();
+  var reponse2 = $("#table-body-questions #"+id+" .reponse2").first().text();
+  // on pré-remplit les infos du formulaire
+  $("#modifQuestionBlock h2").text("Modification de la question numéro "+id);
+  $("#intituleModif").val(intitule);
+  $("#reponse1Modif").val(reponse1);
+  $("#reponse2Modif").val(reponse2);
+  $("#radioButton1Modif").attr("checked", "checked"); // pour l'instant, on coche par défaut la réponse 1
+
+  // on lance une petite animation de slide pour afficher le formulaire, s'il 'est pas déjà affiché
+  if($("#modifQuestionBlock").is(":hidden")) {
+    $("#modifQuestionBlock").fadeToggle();
+  }
+
+  // à ce moment, on donne le bon argument à la fonction onclick() du bouton de mise à jour
+  $("#button-modifier").attr("onclick", "updateQuestion("+id+")");
+
+}
+
+
 // ===== NOTIFIACTION LOLIBOX =====
 /*
   Succès lors de l'ajout d'une question
@@ -132,6 +186,22 @@ function alertFailRemove() {
   Lobibox.notify('error', {
     title: 'Erreur !',
     msg: 'Votre question n\'a pas pu être supprimée.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+function alertSuccessUpdate() {
+  Lobibox.notify('success', {
+    title: 'Mise à jour réussie !',
+    msg: 'Votre question a bien été mise à jour.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+function alertFailUpdate() {
+  Lobibox.notify('error', {
+    title: 'Erreur !',
+    msg: 'La question n\'a pas pu être mise à jour.',
     delayIndicator: false // pas de barre timer
   });
 }
