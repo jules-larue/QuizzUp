@@ -77,12 +77,12 @@ function deleteQuestion(event) {
         data: JSON.stringify({"id":id}), // on envoie l'id de la question au serveur
         success: function(data) {
           if(data["success"] == true) {
-            alert("La question (id "+id+") a bien été supprimée.");
+            alertSuccessRemove();
             $("#table-body-questions #"+id).remove(); // on supprime la question dans la liste
           }
         },
         error: function(err) {
-          alert("Impossible de supprimer la question.");
+          alertFailRemove();
         }
   });
 }
@@ -107,6 +107,29 @@ function alertFailAdd() {
   Lobibox.notify('error', {
     title: 'Erreur !',
     msg: 'Votre question n\'a pas pu être ajoutée.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+/*
+  Succès lors de la suppression d'une question
+*/
+function alertSuccessRemove() {
+  Lobibox.notify('success', {
+    title: 'Question supprimée !',
+    msg: 'La question a bien été supprimée.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+
+/*
+  Echec lors de l'ajout d'une question
+*/
+function alertFailRemove() {
+  Lobibox.notify('error', {
+    title: 'Erreur !',
+    msg: 'Votre question n\'a pas pu être supprimée.',
     delayIndicator: false // pas de barre timer
   });
 }
