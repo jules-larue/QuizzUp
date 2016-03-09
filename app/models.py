@@ -14,6 +14,19 @@ class Question(db.Model):
     def toDict(self):
         return {"id":self.id,"contenu":self.contenu,"reponse1":self.reponse1, "reponse2":self.reponse2}
 
+    """ SETTERS """
+    def setContenu(self, newContenu):
+        self.contenu = newContenu
+
+    def setReponse1(self, newReponse1):
+        self.reponse1 = newReponse1
+
+    def setReponse2(self, newReponse2):
+        self.reponse2 = newReponse2
+
+    def setBonneReponse(self, newBonneReponse):
+        self.bonneReponse = newBonneReponse
+
 class InstanceQuestion(db.Model):
     __tablename__ = 'instancequestion'
     id = db.Column(db.Integer, primary_key=True)
