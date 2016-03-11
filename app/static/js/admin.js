@@ -87,6 +87,11 @@ function deleteQuestion(event) {
           if(data["success"] == true) {
             alertSuccessRemove();
             $("#table-body-questions #"+id).remove(); // on supprime la question dans la liste
+            // on va supprimer le formulaire de modification de question
+            // si la question supprimée est celle qu'on modifie
+            var idModif = getCookie("idQuestModifiee"); // l'id de la question modifiée
+            if(idModif == id) // on a trouvé une question en cours de modification
+              showAddQuestion();
           }
         },
         error: function(err) {
