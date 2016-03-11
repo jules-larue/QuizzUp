@@ -41,6 +41,35 @@ function ajoutQuestion(question) {
 }
 
 
+/**
+  * Vérifie les champs du formulaire de question
+  * Renvoie true si tout est ok
+  * False sinon
+*/
+function checkQuestionForm() {
+  var intitule = $("#intitule").val();
+  var reponse1 = $("#reponse1").val();
+  var reponse2 = $("#reponse2").val();
+  var res = true;
+  // à chaque fois on supprimes les espaces, pour voir si le champs contient au moins un autre caractère
+  if((jQuery.trim(intitule)).length==0) {
+    alertWarningBox("Veuillez remplir l'intitulé de la question.");
+    res = false;
+  }
+
+  if((jQuery.trim(reponse1)).length==0) {
+    alertWarningBox("Veuillez remplir la réponse 1.");
+    res = false;
+  }
+
+  if((jQuery.trim(reponse2)).length==0) {
+    alertWarningBox("Veuillez remplir la réponse 2.");
+    res = false;
+  }
+  return res;
+}
+
+
 function refreshListeQuestions(data) {
   console.log(data);
   for(var question of data["Questions"]) {
@@ -50,29 +79,32 @@ function refreshListeQuestions(data) {
 }
 
 function submitQuestion() {
-  // on crée la nouvelle question
-  var question = new Question($("#intitule").val(),
-                              $("#reponse1").val(),
-                              $("#reponse2").val(),
-                              $("#radioButton1").is(":checked") ? 1 : 2
-                            );
-  // et on fait la requête AJAX POST
-  $.ajax({
-        url: "http://localhost:5000/question/",
-        type: "PUT",
-        contentType: "application/json; charset=utf-8", // le type de données qu'on envoie
-        data: JSON.stringify(question)  , // la donnée qu'on envoie
-        success: function(data) {
-          if(data["success"] == true) {
-            // le serveur nous dit que la réponse a bien été ajoutée
-            alertSuccessAdd();
-            ajoutQuestion(data["question"]); // on ajoute la question à la liste
-          }
-        },
-        error: function() {
-          alertFailAdd();
-    }
-  });
+    if(checkQuestionForm()){ // formulaire rempli correctement
+
+    // on crée la nouvelle question
+    var question = new Question($("#intitule").val(),
+                                $("#reponse1").val(),
+                                $("#reponse2").val(),
+                                $("#radioButton1").is(":checked") ? 1 : 2
+                              );
+    // et on fait la requête AJAX POST
+    $.ajax({
+          url: "http://localhost:5000/question/",
+          type: "PUT",
+          contentType: "application/json; charset=utf-8", // le type de données qu'on envoie
+          data: JSON.stringify(question)  , // la donnée qu'on envoie
+          success: function(data) {
+            if(data["success"] == true) {
+              // le serveur nous dit que la réponse a bien été ajoutée
+              alertSuccessAdd();
+              ajoutQuestion(data["question"]); // on ajoute la question à la liste
+            }
+          },
+          error: function() {
+            alertFailAdd();
+      }
+    });
+  } // fin if(checkQuestionForm())
 }
 
 
@@ -102,30 +134,32 @@ function deleteQuestion(event) {
 
 
 function updateQuestion(id) {
-  var question = new Question($("#intitule").val(),
-                              $("#reponse1").val(),
-                              $("#reponse2").val(),
-                              $("#radioButton1").is(":checked") ? 1 : 2
-                            ); // la nouvelle question mise à jour
-  $.ajax({
-        url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
-        type: "POST", // méthode POST
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(question), // on envoie les nouvelles données de la question modiifiée au serveur
-        success: function(data) {
-          if(data["success"] == true) {
-            alertSuccessUpdate();
-            // on met à jour le tableau
-            $("#table-body-questions #"+id+" .contenu").first().text(data["question"]["contenu"]);
-            $("#table-body-questions #"+id+" .reponse1").first().text(data["question"]["reponse1"]);
-            $("#table-body-questions #"+id+" .reponse2").first().text(data["question"]["reponse2"]);
-            showAddQuestion(); // on affiche un fomulaire d'ajout de nouvelle question
+  if(checkQuestionForm()){ // on varifie si les champs sont ok
+    var question = new Question($("#intitule").val(),
+                                $("#reponse1").val(),
+                                $("#reponse2").val(),
+                                $("#radioButton1").is(":checked") ? 1 : 2
+                              ); // la nouvelle question mise à jour
+    $.ajax({
+          url: "http://localhost:5000/question/"+id, // on choisir l'id de la question à supprimer dans la route
+          type: "POST", // méthode POST
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(question), // on envoie les nouvelles données de la question modiifiée au serveur
+          success: function(data) {
+            if(data["success"] == true) {
+              alertSuccessUpdate();
+              // on met à jour le tableau
+              $("#table-body-questions #"+id+" .contenu").first().text(data["question"]["contenu"]);
+              $("#table-body-questions #"+id+" .reponse1").first().text(data["question"]["reponse1"]);
+              $("#table-body-questions #"+id+" .reponse2").first().text(data["question"]["reponse2"]);
+              showAddQuestion(); // on affiche un fomulaire d'ajout de nouvelle question
+            }
+          },
+          error: function(err) {
+            alertFailUpdate();
           }
-        },
-        error: function(err) {
-          alertFailUpdate();
-        }
-  });
+    });
+  } // fin if(checkQuestionForm())
 }
 
 
@@ -276,6 +310,13 @@ function alertFailUpdate() {
   Lobibox.notify('error', {
     title: 'Erreur !',
     msg: 'La question n\'a pas pu être mise à jour.',
+    delayIndicator: false // pas de barre timer
+  });
+}
+
+function alertWarningBox(titre) {
+  Lobibox.notify('warning', {
+    title: titre,
     delayIndicator: false // pas de barre timer
   });
 }
