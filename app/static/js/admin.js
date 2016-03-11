@@ -16,6 +16,7 @@ $().ready(function() {
   });
 
   $("#button-modifier").hide(); // au début on ne montre pas le bouton de modification
+  console.log("COUCOUOCUOCUCOCOCOCU");
 
   $(".close").click(showAddQuestion); // association évènement click à la croix
   $(".close").hide(); // au début, pas de croix
@@ -127,6 +128,8 @@ function updateQuestion(id) {
   Affiche le bloc de modification d'une question dont l'id est précisé en paramètre
 */
 function showModifQuestion(id) {
+   // on stocke dans un cookie l'id de la question actuellement modifiée
+   document.cookie = "idQuestModifiee="+id+";";
    // on commence par faire disparaitre l'ancien formulaire
   $("#form-question").fadeOut(callback = function() {
     // on commence pas enlever la mise en valeur d'une autre éventuelle question
@@ -163,6 +166,9 @@ function showModifQuestion(id) {
   et affiche un formulaire vierge pour ajouter une question
 */
 function showAddQuestion() {
+  // on supprime le cookie stockant l'id de la qustion en cours de modification
+  var d = new Date();
+  document.cookie = "expires=" + d.toGMTString() + ";" + ";";
   // on commence par faire disparaitre l'ancien formulaire
   $("#form-question").fadeOut(callback = function() {
     // on ne met plus en valeur la question dans le tableau
@@ -188,6 +194,23 @@ function showAddQuestion() {
   $("#form-question").fadeIn();
 }
 
+
+// ===== COOKIES =====
+
+/**
+  * Fonction pour lire la valeur d'un cookie,
+  * à partir de la valeur d'une clef
+*/
+function getCookie(clefParam) {
+  var cookiearrray = document.cookie.split(";"); // on récupère un tableau de "clef=valeur"
+  for(var i=0; i<cookiearrray.length; ++i) {
+    var clef = cookiearrray[i].split("=")[0];
+    if(clef == clefParam) // on trouve qu'il y a une question en cours de modification
+      return cookiearrray[i].split("=")[1]; // on retourne son id
+  }
+  // si on ne trouve pas de question modifiée, on retourne -1
+  return -1;
+}
 
 
 // ===== NOTIFIACTION LOLIBOX =====
