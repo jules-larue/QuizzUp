@@ -54,13 +54,15 @@ def delete_question(question):
 
 @app.route("/reponse/", methods=["PUT"] )
 def put_reponse():
-    if request.json and {"id","reponse"}.issubset( request.json):
+    if request.json and {"numReponse","idQuestion"}.issubset( request.json):
+        # on commence par ajouter la réponse dans la bd
         reponse=Reponse(instancequestion_id=request.json["id"], reponse=request.json["reponse"])
         db.session.add(reponse)
         db.session.commit()
-        return "Bravo, votre réponse est enregistrée"
+        numeroReponseCorrecte = Question.query.get(data["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
+        return jsonify({"success":True, "reponseCorrecte":(numeroReponseCorrecte == data["numReponse"])}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
     else:
-        return "Probleme dans votre reponse"
+        return jsonify({"success":False}) # sinon, échec
 
 @app.route("/instance/", methods=["GET"] )
 def get_instance():
@@ -73,6 +75,7 @@ def get_instance():
         db.session.commit()
 
     return jsonify(instance.toDict())
+
 
 @app.route("/resultats/<int:instance_id>", methods=["GET"] )
 def get_resultats(instance_id):
