@@ -16,7 +16,6 @@ $().ready(function() {
   });
 
   $("#button-modifier").hide(); // au début on ne montre pas le bouton de modification
-  console.log("COUCOUOCUOCUCOCOCOCU");
 
   $(".close").click(showAddQuestion); // association évènement click à la croix
   $(".close").hide(); // au début, pas de croix
