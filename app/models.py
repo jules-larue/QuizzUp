@@ -27,6 +27,7 @@ class Question(db.Model):
     def setBonneReponse(self, newBonneReponse):
         self.bonneReponse = newBonneReponse
 
+
 class InstanceQuestion(db.Model):
     __tablename__ = 'instancequestion'
     id = db.Column(db.Integer, primary_key=True)
@@ -35,6 +36,9 @@ class InstanceQuestion(db.Model):
     reponses=relationship("Reponse")
     def toDict(self):
         return {"id":self.id,"question_id":self.question_id, "date":self.date.strftime("%d/%m %H:%M:%S")}
+
+    def __repr__(self):
+        return self.id
 
 
 class Reponse(db.Model):

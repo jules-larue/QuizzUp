@@ -1,0 +1,13 @@
+h1 {
+  text-align:center;
+}
+
+.center-block{
+  width:50%;
+}
+
+#intitule-question {
+  padding: 20px 0;
+  border-radius: 10px;
+  background-color: #33771a;
+}

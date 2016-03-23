@@ -6,6 +6,10 @@ import sys,datetime
 import json
 
 
+@app.route("/home/")
+def home():
+    return render_template("client.html")
+
 @app.route("/admin/")
 def admin():
     return render_template("admin.html")
@@ -54,15 +58,18 @@ def delete_question(question):
 
 @app.route("/reponse/", methods=["PUT"] )
 def put_reponse():
+    print(str(request.json))
     if request.json and {"numReponse","idQuestion"}.issubset( request.json):
         # on commence par ajouter la réponse dans la bd
-        reponse=Reponse(instancequestion_id=request.json["id"], reponse=request.json["reponse"])
+        reponse=Reponse(instancequestion_id=request.json["idQuestion"], reponse=request.json["numReponse"])
         db.session.add(reponse)
         db.session.commit()
-        numeroReponseCorrecte = Question.query.get(data["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
-        return jsonify({"success":True, "reponseCorrecte":(numeroReponseCorrecte == data["numReponse"])}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
+        numeroReponseCorrecte = Question.query.get(request.json["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
+        print("OK RETURN TRUE")
+        return jsonify({"success":True, "reponseCorrecte":(numeroReponseCorrecte == request.json["numReponse"])}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
     else:
         return jsonify({"success":False}) # sinon, échec
+
 
 @app.route("/instance/", methods=["GET"] )
 def get_instance():
@@ -73,7 +80,6 @@ def get_instance():
         instance=InstanceQuestion(question_id=1, date=datetime.datetime.now())
         db.session.add(instance)
         db.session.commit()
-
     return jsonify(instance.toDict())
 
 
