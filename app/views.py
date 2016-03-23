@@ -77,7 +77,8 @@ def get_instance():
     if (len(recente)>0):
         instance=recente[0]
     else:
-        instance=InstanceQuestion(question_id=1, date=datetime.datetime.now())
+        randomId = Question.getRandomId()
+        instance=InstanceQuestion(question_id=randomId, date=datetime.datetime.now())
         db.session.add(instance)
         db.session.commit()
     return jsonify(instance.toDict())

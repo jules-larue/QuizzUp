@@ -27,6 +27,22 @@ class Question(db.Model):
     def setBonneReponse(self, newBonneReponse):
         self.bonneReponse = newBonneReponse
 
+    @staticmethod
+    def getRandomId():
+        import random
+        from sqlalchemy.sql.expression import func
+        results = Question.query.all()
+        nbQuestions = db.session.query(Question).count()
+        randomIndex = random.randint(0, nbQuestions) # indice aléatoire pour la question à sélectionner
+        print("randomIndex = "+str(randomIndex))
+        print("Nombre de questions trouvées : "+str(nbQuestions))
+        i = 0
+        for question in results:
+            if i==randomIndex:
+                return question.id
+            else:
+                i += 1
+
 
 class InstanceQuestion(db.Model):
     __tablename__ = 'instancequestion'
