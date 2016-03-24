@@ -51,7 +51,9 @@ class InstanceQuestion(db.Model):
     date = db.Column(db.DateTime)
     reponses=relationship("Reponse")
     def toDict(self):
-        return {"id":self.id,"question_id":self.question_id, "date":self.date.strftime("%d/%m %H:%M:%S")}
+        from datetime import datetime
+        difference_secondes = 60 - (datetime.now() - self.date).total_seconds() # temps restant pour répondre à la question
+        return {"id":self.id,"question_id":self.question_id, "temps_restant":difference_secondes}
 
     def __repr__(self):
         return self.id

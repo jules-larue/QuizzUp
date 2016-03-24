@@ -10,12 +10,23 @@ $(document).ready(function() {
     success:function(data) {
       var question = getQuestionById(data["question_id"]);
       setInstanceQuestion(question, data["question_id"]);
+      $("#timer-text").text(parseInt(data["temps_restant"])); // initialisation timer
+      setInterval(setTimer, 1000); // on va rafraichir le timer toutes les secondes
     },
     error: function(err){
       console.log("Erreur lors de la récupération des questions");
     }
   });
 })
+
+
+// Démarrer le timer avec une durée passée en paramètre
+function setTimer() {
+  if($("#timer-text").text() > 0) { // on n'affiche pas une durée négative
+    $("#timer-text").text($("#timer-text").text() - 1); // on enlève une seconde
+  }
+
+}
 
 
 function getQuestionById(question_id) {
@@ -29,7 +40,7 @@ function getQuestionById(question_id) {
       // data["Questions"] contient la liste de toutes les questions de la base
       for(var question of data["Questions"]) {
         if(question.id == question_id) {
-          console.log("Sucess");
+          console.log("Success");
           res =  new Question(question.contenu,
                               question.reponse1,
                               question.reponse2);
