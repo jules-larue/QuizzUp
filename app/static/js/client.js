@@ -10,23 +10,20 @@ $(document).ready(function() {
     success:function(data) {
       var question = getQuestionById(data["question_id"]);
       setInstanceQuestion(question, data["question_id"]);
-      $("#timer-text").text(parseInt(data["temps_restant"])); // initialisation timer
-      setInterval(setTimer, 1000); // on va rafraichir le timer toutes les secondes
+      console.log("Temps restant : "+data["temps_restant"]);
+      $("#countdown").countdown360({ // démarrage et affichage du compte à rebours
+      	radius      : 60, // rayon du timer
+      	seconds     : data["temps_restant"], // temps restant
+      	fontColor   : '#FFFFFF', // couleur du texte (ici, blanc)
+      	autostart   : true, // démarrage auto du timer
+      	onComplete  : function () { console.log('Temps écoulé !') } // fonction à exécuter à la fin du compte à rebours
+      	}).start()
     },
     error: function(err){
       console.log("Erreur lors de la récupération des questions");
     }
   });
 })
-
-
-// Démarrer le timer avec une durée passée en paramètre
-function setTimer() {
-  if($("#timer-text").text() > 0) { // on n'affiche pas une durée négative
-    $("#timer-text").text($("#timer-text").text() - 1); // on enlève une seconde
-  }
-
-}
 
 
 function getQuestionById(question_id) {

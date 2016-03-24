@@ -27,8 +27,7 @@
   </div>
 
   <!-- Timer indiquant le temps restant pour répondre -->
-  <div id="timer" class="center-block">
-    <p id="timer-text"></p>
+  <div id="countdown" class="center-block">
   </div>
 
 </body>
@@ -39,6 +38,10 @@
 <!-- Import de JQuery -->
 <script src="{{url_for('static', filename='js/jquery.min.js')}}">
 </script>
+<!-- Import du plugin timer JQuery -->
+<script src="{{url_for('static', filename='plugins/countdown/src/jquery.countdown360.js')}}" type="text/javascript" charset="utf-8">
+</script>
+
 <script src="{{url_for('static', filename='js/client.js')}}">
 </script>
 <!-- Import du modèle de Question -->
