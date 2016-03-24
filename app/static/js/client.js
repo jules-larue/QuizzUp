@@ -17,7 +17,11 @@ $(document).ready(function() {
       	fontColor   : '#FFFFFF', // couleur du texte (ici, blanc)
       	autostart   : true, // démarrage auto du timer
       	onComplete  : function () { console.log('Temps écoulé !') } // fonction à exécuter à la fin du compte à rebours
-      	}).start()
+      }).start();
+      $("#countdown").children().addClass("center-block"); // on centre le timer (enfant du div countdown)
+      // on modifie la largeur et la hauteur du timer
+      $("#countdown").width(300);
+      $("#countdown").height(300);
     },
     error: function(err){
       console.log("Erreur lors de la récupération des questions");
