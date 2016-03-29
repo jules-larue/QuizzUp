@@ -87,5 +87,9 @@ def get_instance():
 @app.route("/resultats/<int:instance_id>", methods=["GET"] )
 def get_resultats(instance_id):
     instance=InstanceQuestion.query.get(instance_id)
-    reponses=Reponse.query.filter(Reponse.instancequestion_id==instance_id).all()
-    return jsonify({"reponses":[x.toDict() for x in reponses]})
+    question = Question.query.get(instance_id) # la question répondue
+    nbBonnesReponses = db.session.query(Reponse).filter((Reponse.reponse == question.bonneReponse) & (Reponse.instancequestion_id == instance_id)).count()
+    mauvaiseReponse = 2 if question.bonneReponse==1 else 1
+    nbMauvaisesReponses = db.session.query(Reponse).filter((Reponse.reponse == mauvaiseReponse) & (Reponse.instancequestion_id == instance_id)).count()
+    nbReponses = db.session.query(Reponse).filter(Reponse.instancequestion_id == instance_id).count()
+    return jsonify({"pourcentageBonnesReponses":(nbBonnesReponses/nbReponses)*100, "pourcentageMauvaisesReponses":(nbMauvaisesReponses/nbReponses)*100})
