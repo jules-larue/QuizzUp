@@ -33,7 +33,7 @@ class Question(db.Model):
         from sqlalchemy.sql.expression import func
         results = Question.query.all()
         nbQuestions = db.session.query(Question).count()
-        randomIndex = random.randint(0, nbQuestions) # indice aléatoire pour la question à sélectionner
+        randomIndex = random.randint(0, nbQuestions-1) # indice aléatoire pour la question à sélectionner
         print("randomIndex = "+str(randomIndex))
         print("Nombre de questions trouvées : "+str(nbQuestions))
         i = 0
