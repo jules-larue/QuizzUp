@@ -137,13 +137,15 @@ function afficherStats(idQuestion) {
     success:function(data) {
           console.log("nb bonnes : "+data["pourcentageBonnesReponses"]);
           console.log("nb mauvaises : "+data["pourcentageMauvaisesReponses"]);
-
+          if( !$("#resultats").is(":visible") ) {
           $("#countdown").fadeOut(callback = function() { // disparition chronomètre et apparition stats en fondu
-            $("#resultats").append("<h3>").append("Résultats :");
-            $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
-            $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
-            $("#resultats").fadeIn();
-          });
+              // on fait l'affichage des stats que si elles ne le son pas déjà
+              $("#resultats").append("<h3>").append("Résultats :");
+              $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
+              $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
+              $("#resultats").fadeIn();
+            });
+          }
     },
     error: function(err) {
       console.log("Erreur lors de la récupération des stats.");
