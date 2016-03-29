@@ -16,7 +16,7 @@ $(document).ready(function() {
       	seconds     : data["temps_restant"], // temps restant
       	fontColor   : '#FFFFFF', // couleur du texte (ici, blanc)
       	autostart   : true, // démarrage auto du timer
-      	onComplete  : function () { console.log('Temps écoulé !') } // fonction à exécuter à la fin du compte à rebours
+      	onComplete  : function () { afficherStats(data["question_id"]) } // fonction à exécuter à la fin du compte à rebours
       }).start();
       $("#countdown").children().addClass("center-block"); // on centre le timer (enfant du div countdown)
       // on modifie la largeur et la hauteur du timer
@@ -125,4 +125,23 @@ function indiquerMauvaiseReponse(numReponse) {
 
   $("#msg-reponse").text("Vous avez choisi la mauvaise réponse."); // on indique le texte de la bonne réponse
   $("#msg-reponse").addClass("alert-danger"); // le message est en vert (succès)
+}
+
+
+function afficherStats(idQuestion) {
+  $.ajax({
+    url: "http://localhost:5000/resultats/"+idQuestion, // route api
+    type: "GET", // requête GET
+    datatype: "application/json",
+    success:function(data) {
+          console.log("nb bonnes : "+data["pourcentageBonnesReponses"]);
+          console.log("nb mauvaises : "+data["pourcentageMauvaisesReponses"]);
+          $("#resultats").append("<h3>").append("Résultats :");
+          $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
+          $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
+    },
+    error: function(err) {
+      console.log("Erreur lors de la récupération des stats.");
+    }
+  });
 }
