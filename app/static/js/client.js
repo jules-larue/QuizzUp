@@ -140,9 +140,9 @@ function afficherStats(idQuestion) {
           if( !$("#resultats").is(":visible") ) {
           $("#countdown").fadeOut(callback = function() { // disparition chronomètre et apparition stats en fondu
               // on fait l'affichage des stats que si elles ne le son pas déjà
-              $("#resultats").append("<h3>").append("Résultats :");
-              $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
-              $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
+              $("#resultats").append($("<h3>").append("Résultats :"));
+              $("#resultats").append($("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %"));
+              $("#resultats").append($("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %"));
               $("#resultats").fadeIn();
             });
           }
