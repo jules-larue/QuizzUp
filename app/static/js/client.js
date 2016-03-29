@@ -22,6 +22,7 @@ $(document).ready(function() {
       // on modifie la largeur et la hauteur du timer
       $("#countdown").width(300);
       $("#countdown").height(300);
+      $("#resultats").hide();
     },
     error: function(err){
       console.log("Erreur lors de la récupération des questions");
@@ -136,9 +137,13 @@ function afficherStats(idQuestion) {
     success:function(data) {
           console.log("nb bonnes : "+data["pourcentageBonnesReponses"]);
           console.log("nb mauvaises : "+data["pourcentageMauvaisesReponses"]);
-          $("#resultats").append("<h3>").append("Résultats :");
-          $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
-          $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
+
+          $("#countdown").fadeOut(callback = function() { // disparition chronomètre et apparition stats en fondu
+            $("#resultats").append("<h3>").append("Résultats :");
+            $("#resultats").append("<p>").append("Bonnes réponses : "+data["pourcentageBonnesReponses"]+" %");
+            $("#resultats").append("<p>").append("Mauvaises réponses : "+data["pourcentageMauvaisesReponses"]+" %");
+            $("#resultats").fadeIn();
+          });
     },
     error: function(err) {
       console.log("Erreur lors de la récupération des stats.");
