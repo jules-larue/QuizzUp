@@ -71,6 +71,18 @@ def put_reponse():
         return jsonify({"success":False}) # sinon, échec
 
 
+@app.route("/reponse/", methods=["GET"] )
+def get_reponse():
+    print(str(request.json))
+    if request.json and {"idQuestion"}.issubset( request.json):
+        # on commence par ajouter la réponse dans la bd
+        numeroReponseCorrecte = Question.query.get(request.json["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
+        print("OK RETURN TRUE")
+        return jsonify({"success":True, "reponseCorrecte":numeroReponseCorrecte}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
+    else:
+        return jsonify({"success":False}) # sinon, échec
+
+
 @app.route("/instance/", methods=["GET"] )
 def get_instance():
     recente=InstanceQuestion.query.filter(InstanceQuestion.date>=(datetime.datetime.now()-datetime.timedelta(minutes=1))).all()
