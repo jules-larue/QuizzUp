@@ -87,7 +87,7 @@ function envoyerReponse(numReponse, idQuestion) {
           indiquerMauvaiseReponse(numReponse);
         }
         // dans tous les cas, on rend les boutons inactifs
-      //  $("#rep1, #rep2").attr("disabled", "disabled");
+        $("#rep1, #rep2").attr("disabled", "disabled");
       }
       else { // échec dans la requête
         // pour l'instant pas grand chose
