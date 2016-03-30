@@ -66,21 +66,17 @@ def put_reponse():
         db.session.commit()
         numeroReponseCorrecte = Question.query.get(request.json["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
         print("OK RETURN TRUE")
-        return jsonify({"success":True, "reponseCorrecte":(numeroReponseCorrecte == request.json["numReponse"])}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
-    else:
-        return jsonify({"success":False}) # sinon, échec
-
-
-@app.route("/reponse/", methods=["GET"] )
-def get_reponse():
-    print(str(request.json))
-    if request.json and {"idQuestion"}.issubset( request.json):
-        # on commence par ajouter la réponse dans la bd
-        numeroReponseCorrecte = Question.query.get(request.json["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
-        print("OK RETURN TRUE")
         return jsonify({"success":True, "reponseCorrecte":numeroReponseCorrecte}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
     else:
         return jsonify({"success":False}) # sinon, échec
+
+
+@app.route("/reponse/<int:id>", methods=["GET"] )
+def get_reponse(id):
+    numeroReponseCorrecte = Question.query.get(id).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
+    print("OK RETURN TRUE GET REPONSE")
+    return jsonify({"success":True, "reponseCorrecte":numeroReponseCorrecte}) # dans ce cas on renvoie un succèes pour la requête, et si la réponse donnée est correcte
+
 
 
 @app.route("/instance/", methods=["GET"] )
