@@ -11,28 +11,40 @@
 </head>
 
 <body>
-  <h1>Bienvenue sur Quizzup !</h1>
 
-  <!-- Block affichage question courante -->
-  <div class="center-block">
-    <h2 id="intitule-question" class="bg-primary text-center"></h2>
+  <div id="identification">
+    <h1>Veuillez choisir un pseudo :</h1>
 
-    <!-- Le bouton pour la réponse 1 -->
-    <button id="rep1" type="button" class="btn btn-primary btn-lg btn-block"></button>
+    <input id="pseudo" class="form-control" type="text" />
 
-    <!-- Le bouton pour la réponse 2 -->
-    <button id="rep2" type="button" class="btn btn-primary btn-lg btn-block"></button>
-
-    <div class="msg-reponse" role="alert"></div>
+    <button type="button" id="btn-pseudo" class="btn btn-primary btn-lg btn-block" onclick="submitLogin()">Je suis prêt !</button>
   </div>
 
-  <!-- Timer indiquant le temps restant pour répondre -->
-  <div id="countdown" class="center-block">
-  </div>
 
-  <!-- Les résultats de la question -->
-  <div id="resultats" class="text-center">
-  </div>
+  <div id="quizz">
+    <h1>Bienvenue sur Quizzup !</h1>
+
+    <!-- Block affichage question courante -->
+    <div class="center-block">
+      <h2 id="intitule-question" class="bg-primary text-center"></h2>
+
+      <!-- Le bouton pour la réponse 1 -->
+      <button id="rep1" type="button" class="btn btn-primary btn-lg btn-block"></button>
+
+      <!-- Le bouton pour la réponse 2 -->
+      <button id="rep2" type="button" class="btn btn-primary btn-lg btn-block"></button>
+
+      <div class="msg-reponse" role="alert"></div>
+    </div>
+
+    <!-- Timer indiquant le temps restant pour répondre -->
+    <div id="countdown" class="center-block">
+    </div>
+
+    <!-- Les résultats de la question -->
+    <div id="resultats" class="text-center">
+    </div>
+  </div> <!-- Fin id quizz -->
 
 </body>
 
