@@ -100,4 +100,4 @@ def get_resultats(instance_id):
     mauvaiseReponse = 2 if question.bonneReponse==1 else 1
     nbMauvaisesReponses = db.session.query(Reponse).filter((Reponse.reponse == mauvaiseReponse) & (Reponse.instancequestion_id == instance_id)).count()
     nbReponses = db.session.query(Reponse).filter(Reponse.instancequestion_id == instance_id).count()
-    return jsonify({"pourcentageBonnesReponses":(nbBonnesReponses/nbReponses)*100, "pourcentageMauvaisesReponses":(nbMauvaisesReponses/nbReponses)*100})
+    return jsonify({"pourcentageBonnesReponses":round((nbBonnesReponses/nbReponses)*100,2), "pourcentageMauvaisesReponses":round((nbMauvaisesReponses/nbReponses)*100,2)})
