@@ -59,9 +59,10 @@ def delete_question(question):
 @app.route("/reponse/", methods=["PUT"] )
 def put_reponse():
     print(str(request.json))
-    if request.json and {"numReponse","idQuestion"}.issubset( request.json):
+    if request.json and {"numReponse","idQuestion","pseudo"}.issubset( request.json):
         # on commence par ajouter la réponse dans la bd
-        reponse=Reponse(instancequestion_id=request.json["idQuestion"], reponse=request.json["numReponse"])
+        print("REPONSE DONNEE PAR "+request.json["pseudo"])
+        reponse=Reponse(instancequestion_id=request.json["idQuestion"], reponse=request.json["numReponse"], user=request.json["pseudo"])
         db.session.add(reponse)
         db.session.commit()
         numeroReponseCorrecte = Question.query.get(request.json["idQuestion"]).bonneReponse # le numéro de la bonne réponse récupérée dans la base de donnée
