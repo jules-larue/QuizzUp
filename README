@@ -1,0 +1,16 @@
+Projet Quizzup, Jules LARUE
+
+Configuration du virtualenv et lancement du serveur : 
+
+virtualenv -p python3 venv
+source venv/bin/activate
+pip install -r requirents.txt
+./manage runserver
+
+./manage.py loaddb : créer la base de données (ou mettre à jour sa structure)
+
+Côté client, 2 vues : 
+
+locahost:5000/admin/ pour gérer les questions
+
+localhost:5000/home/ pour répondre aux questions
