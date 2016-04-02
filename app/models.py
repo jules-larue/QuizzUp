@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
-
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     contenu=db.Column(db.String)
@@ -63,7 +62,7 @@ class Reponse(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     instancequestion_id= db.Column(db.Integer, ForeignKey('instancequestion.id'))
     reponse=db.Column(db.Integer)
-    user=db.Column(db.Integer)
+    user=db.Column(db.String(64))
     date = db.Column(db.Date)
     def toDict(self):
         instanceQ=InstanceQuestion.query.get(self.instancequestion_id)
