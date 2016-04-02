@@ -1,10 +1,27 @@
-
+var pseudo; // pseudo de l'utilisateur connecté
 // Quand le document HTML est prêt,
 // on récupère une question à afficher
 // et on l'affiche
 $(document).ready(function() {
-  afficherNouvelleQuestion();
-})
+  $("#btn-pseudo").attr("disabled", false);
+  $("#quizz").hide();
+});
+
+
+function submitLogin() {
+  pseudo = $("#pseudo").val();
+  if((jQuery.trim(pseudo)).length==0) {
+    // champ vide
+    alert("Vous devez choisir un pseudo.");
+  } else {
+    pseudo
+
+    // cacher le champs de pseudo et montrer celui por la question
+    $("#identification").fadeOut(callback = function(){$("#quizz").fadeIn();});
+    // et affichage d'une question
+    afficherNouvelleQuestion();
+  }
+}
 
 
 
@@ -95,7 +112,7 @@ function envoyerReponse(numReponse, idQuestion) {
     url: "http://localhost:5000/reponse/", // route api
     type: "PUT", // requête PUT
     contentType: "application/json; charset=utf-8", // le type de données qu'on envoie
-    data: JSON.stringify({"numReponse":numReponse, "idQuestion":idQuestion}),
+    data: JSON.stringify({"numReponse":numReponse, "idQuestion":idQuestion, "pseudo":pseudo}),
     datatype: "application/json", // type de donnée
     success:function(data) {
       if(data["success"] == true){
